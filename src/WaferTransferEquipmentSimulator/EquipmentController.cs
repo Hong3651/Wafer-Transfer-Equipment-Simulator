@@ -2,9 +2,17 @@ namespace WaferTransferEquipmentSimulator
 {
     public class EquipmentController
     {
+        private readonly WaferTransferSequence _sequence
+            = new WaferTransferSequence();
+
         // 현재 상태는 외부에서 읽을 수 있지만, 변경은 이 클래스 내부에서만 가능합니다.
         public EquipmentState State { get; private set; }
             = EquipmentState.Uninitialized;
+
+        public SequenceStep CurrentSequenceStep
+        {
+            get { return _sequence.CurrentStep; }
+        }
 
         public bool Initialize()
         {
@@ -27,7 +35,38 @@ namespace WaferTransferEquipmentSimulator
                 return false;
             }
 
+            // 이전 작업이 끝난 상태라면 다음 작업을 위해 Sequence를 초기화합니다.
+            if (_sequence.CurrentStep == SequenceStep.Completed)
+            {
+                _sequence.Reset();
+            }
+
+            if (!_sequence.Start())
+            {
+                return false;
+            }
+
             State = EquipmentState.Running;
+            return true;
+        }
+
+        public bool MoveNextSequenceStep()
+        {
+            if (State != EquipmentState.Running)
+            {
+                return false;
+            }
+
+            if (!_sequence.MoveNext())
+            {
+                return false;
+            }
+
+            if (_sequence.CurrentStep == SequenceStep.Completed)
+            {
+                return Complete();
+            }
+
             return true;
         }
 
@@ -51,7 +90,8 @@ namespace WaferTransferEquipmentSimulator
 
         public bool Complete()
         {
-            if (State != EquipmentState.Running)
+            if (State != EquipmentState.Running ||
+                _sequence.CurrentStep != SequenceStep.Completed)
             {
                 return false;
             }

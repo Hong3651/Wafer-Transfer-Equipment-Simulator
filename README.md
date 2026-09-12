@@ -31,7 +31,7 @@ Command는 위에서 아래로 전달하고 Status는 아래에서 위로 전달
 
 - [x] Phase 1: Repository 기본 구조
 - [x] Phase 2: Equipment State, State Machine, Equipment Controller
-- [ ] Phase 3: Sequence
+- [x] Phase 3: Sequence
 - [ ] Phase 4: Device Layer - Robot, Door, Sensor, Motor, Cylinder
 - [ ] Phase 5: Console Equipment Simulator
 - [ ] Phase 6: Interlock, Alarm, Logging
@@ -59,6 +59,8 @@ Wafer-Transfer-Equipment-Simulator/
         ├── WaferTransferEquipmentSimulator.csproj
         ├── EquipmentState.cs
         ├── EquipmentController.cs
+        ├── SequenceStep.cs
+        ├── WaferTransferSequence.cs
         └── Program.cs
 ```
 
@@ -92,7 +94,7 @@ PowerShell:
 
 로컬 `.vscode/settings.json`에서 터미널의 SDK 경로를 설정했다면 기존 터미널을 종료하고 새 터미널을 엽니다. `.vscode/`는 Git 관리 대상에서 제외되므로 다른 PC에는 해당 설정이 전달되지 않습니다.
 
-현재 프로그램은 실제 장비 동작 없이 초기화, 시작, 중복 시작 거부, 완료, 오류와 복구의 상태 변경을 확인하는 학습용 구현입니다. 실행 흐름과 전체 예상 출력은 [Phase 2 설계](docs/phase2_equipment_state.md)를 참고합니다.
+현재 프로그램은 실제 장비 동작 없이 Equipment State와 Wafer Transfer Sequence의 단계 변경을 확인하는 학습용 구현입니다. Sequence가 완료되면 Equipment Controller가 장비 상태를 `Running`에서 `Idle`로 변경합니다. 설계 내용은 [Phase 2 설계](docs/phase2_equipment_state.md)와 [Phase 3 설계](docs/phase3_sequence.md)를 참고합니다.
 
 ## 파일 역할
 
@@ -103,6 +105,8 @@ PowerShell:
 | `Program.cs` | 프로그램 시작 지점인 `Main()`이 있는 소스 파일 |
 | `EquipmentState.cs` | 장비 상태 다섯 개의 정의 |
 | `EquipmentController.cs` | 현재 상태와 명령 허용 조건, 상태 변경 처리 |
+| `SequenceStep.cs` | Wafer Transfer Sequence의 작업 단계 정의 |
+| `WaferTransferSequence.cs` | Sequence 시작, 단계 진행과 초기화 처리 |
 | `bin/` | 빌드의 최종 결과물이 생성되는 폴더 |
 | `obj/` | 빌드에 사용하는 중간 파일 등이 생성되는 폴더 |
 

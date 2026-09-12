@@ -54,3 +54,16 @@
 | `Idle` | 초기화 완료 후 작업 명령을 기다리는 상태 |
 | `Running` | 작업을 실행 중인 상태 |
 | `Error` | 오류가 발생해 정상 작업을 진행할 수 없는 상태 |
+
+## Sequence 단계 용어
+
+| 용어 | 의미 |
+|---|---|
+| Sequence Step | Sequence 내부에서 현재 수행 중이거나 대기 중인 작업 단계 |
+| Wafer Transfer Sequence | Wafer를 집고 이동하여 내려놓는 작업 순서 |
+| `NotStarted` | Sequence 시작 전 단계 |
+| `Preparing` | Wafer 이송 작업을 준비하는 단계 |
+| `PickingWafer` | Wafer를 집는 단계 |
+| `MovingWafer` | Wafer를 목적지로 이동하는 단계 |
+| `PlacingWafer` | 목적지에 Wafer를 내려놓는 단계 |
+| `Completed` | Sequence의 모든 작업이 완료된 단계 |
